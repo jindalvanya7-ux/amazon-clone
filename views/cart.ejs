@@ -1,0 +1,43 @@
+<%- include('partials/header') %>
+<section class="page">
+  <h1>Shopping Cart</h1>
+  <% if (!items.length) { %>
+    <p class="empty">Your cart is empty. <a class="see-more" href="/">Continue shopping</a></p>
+  <% } else { %>
+    <div class="cart-layout">
+      <div class="cart-lines">
+        <% items.forEach(function (item) { %>
+          <article class="cart-line">
+            <a href="/product/<%= item.product_id %>">
+              <div class="cart-img" style="background-image: url('<%= placeholderUri(item.image_color, item.category) %>')"></div>
+            </a>
+            <div class="cart-detail">
+              <a href="/product/<%= item.product_id %>"><h2><%= item.title %></h2></a>
+              <p class="unit-price"><%= formatPrice(item.price_cents) %></p>
+              <div class="cart-actions">
+                <form class="qty-form" method="post" action="/cart/update">
+                  <input type="hidden" name="product_id" value="<%= item.product_id %>">
+                  <label>Qty
+                    <input type="number" name="quantity" min="0" max="<%= item.stock %>" value="<%= item.quantity %>">
+                  </label>
+                </form>
+                <form method="post" action="/cart/remove">
+                  <input type="hidden" name="product_id" value="<%= item.product_id %>">
+                  <button class="link-btn" type="submit">Delete</button>
+                </form>
+              </div>
+            </div>
+            <p class="line-total"><%= formatPrice(item.price_cents * item.quantity) %></p>
+          </article>
+        <% }) %>
+      </div>
+      <aside class="cart-summary">
+        <p>Subtotal (<%= items.reduce(function (n, item) { return n + item.quantity; }, 0) %> items):
+          <strong><%= formatPrice(subtotal) %></strong>
+        </p>
+        <a class="btn-add checkout-link" href="/checkout">Proceed to checkout</a>
+      </aside>
+    </div>
+  <% } %>
+</section>
+<%- include('partials/footer') %>

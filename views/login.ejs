@@ -1,0 +1,36 @@
+<%- include('partials/header') %>
+<section class="page narrow">
+  <% if (mode === 'register') { %>
+    <h1>Create account</h1>
+    <% if (error) { %><p class="form-error"><%= error %></p><% } %>
+    <form class="stack-form" method="post" action="/register">
+      <input type="hidden" name="next" value="<%= next %>">
+      <label>Name
+        <input type="text" name="name" required value="<%= form.name %>">
+      </label>
+      <label>Email
+        <input type="email" name="email" required value="<%= form.email %>">
+      </label>
+      <label>Password
+        <input type="password" name="password" minlength="6" required>
+      </label>
+      <button class="btn-add" type="submit">Create account</button>
+    </form>
+    <p class="page-note"><a class="see-more" href="/login?next=<%= encodeURIComponent(next) %>">Already have an account? Sign in</a></p>
+  <% } else { %>
+    <h1>Sign in</h1>
+    <% if (error) { %><p class="form-error"><%= error %></p><% } %>
+    <form class="stack-form" method="post" action="/login">
+      <input type="hidden" name="next" value="<%= next %>">
+      <label>Email
+        <input type="email" name="email" required value="<%= form.email %>">
+      </label>
+      <label>Password
+        <input type="password" name="password" required>
+      </label>
+      <button class="btn-add" type="submit">Sign in</button>
+    </form>
+    <p class="page-note"><a class="see-more" href="/login?mode=register&amp;next=<%= encodeURIComponent(next) %>">New here? Create an account</a></p>
+  <% } %>
+</section>
+<%- include('partials/footer') %>

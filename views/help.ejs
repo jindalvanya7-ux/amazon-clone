@@ -1,0 +1,18 @@
+<%- include('partials/header') %>
+<section class="page narrow">
+  <% if (typeof missing !== 'undefined' && missing) { %>
+    <h1>Page not found</h1>
+    <p class="empty">That page is not part of this shop. <a class="see-more" href="/">Go home</a></p>
+  <% } else { %>
+    <h1>Help</h1>
+    <p>This is a student shop modeled on the amazon.com homepage. The links below are the same destinations used in the footer.</p>
+    <ul class="help-list">
+      <li>Careers, Blog, About, Investor Relations, Amazon Devices, and Amazon Science</li>
+      <li>Sell products, Become an Affiliate, Advertise, and Self-Publish</li>
+      <li>Shop with Points and Reload balance</li>
+      <li>Returns, Conditions of Use, and Privacy Notice</li>
+    </ul>
+    <p>Sign in from <a class="see-more" href="/login">Your Account</a> or review <a class="see-more" href="/orders">Your Orders</a>.</p>
+  <% } %>
+</section>
+<%- include('partials/footer') %>

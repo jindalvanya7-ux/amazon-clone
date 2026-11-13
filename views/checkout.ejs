@@ -1,0 +1,37 @@
+<%- include('partials/header') %>
+<section class="page narrow">
+  <% if (orderId) { %>
+    <h1>Order placed</h1>
+    <p class="confirm">Thank you. Your order id is <strong><%= orderId %></strong>.</p>
+    <p><a class="see-more" href="/orders">View your orders</a></p>
+  <% } else { %>
+    <h1>Checkout</h1>
+    <p class="page-note">Subtotal <%= formatPrice(subtotal) %> · <%= items.length %> line<%= items.length === 1 ? '' : 's' %></p>
+    <% if (error) { %><p class="form-error"><%= error %></p><% } %>
+    <form class="stack-form" method="post" action="/checkout">
+      <label>Full name
+        <input type="text" name="name" required value="<%= form.name %>">
+      </label>
+      <label>Address
+        <input type="text" name="address" required value="<%= form.address %>">
+      </label>
+      <label>City
+        <input type="text" name="city" required value="<%= form.city %>">
+      </label>
+      <label>Postal code
+        <input type="text" name="postal" required value="<%= form.postal %>">
+      </label>
+      <% if (!user) { %>
+        <label>Email
+          <input type="email" name="email" required value="<%= form.email %>">
+        </label>
+        <label>Password
+          <input type="password" name="password" minlength="6" required>
+        </label>
+        <p class="page-note">This creates an account and places the order. <a class="see-more" href="/login?next=/checkout">Already have an account? Sign in</a></p>
+      <% } %>
+      <button class="btn-add" type="submit">Place order</button>
+    </form>
+  <% } %>
+</section>
+<%- include('partials/footer') %>

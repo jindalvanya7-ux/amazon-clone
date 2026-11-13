@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body id="top">
+  <header>
+    <div class="navbar">
+      <a class="nav-hover logo-link" href="/" aria-label="Amazon home">
+        <%- include('logo') %>
+      </a>
+
+      <a class="nav-hover nav-address" href="/help">
+        <span class="nav-line1">Deliver to</span>
+        <span class="nav-line2"><i class="fa-solid fa-location-dot"></i> India</span>
+      </a>
+
+      <form class="nav-search" action="/search" method="get">
+        <select name="category" aria-label="Search category">
+          <option value="All" <%= !query.category || query.category === 'All' ? 'selected' : '' %>>All</option>
+          <% categories.forEach(function (name) { %>
+            <option value="<%= name %>" <%= query.category === name ? 'selected' : '' %>><%= name %></option>
+          <% }) %>
+        </select>
+        <input type="search" name="q" placeholder="Search Amazon" value="<%= query.q || '' %>" aria-label="Search Amazon">
+        <button type="submit" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
+      </form>
+
+      <a class="nav-hover nav-account" href="<%= user ? '/orders' : '/login' %>">
+        <span class="nav-line1">Hello, <%= user ? user.name : 'sign in' %></span>
+        <span class="nav-line2">Account &amp; Lists</span>
+      </a>
+      <% if (user) { %>
+        <form class="nav-logout" method="post" action="/logout">
+          <button class="nav-hover" type="submit">Sign out</button>
+        </form>
+      <% } %>
+
+      <a class="nav-hover nav-orders" href="/orders">
+        <span class="nav-line1">Returns</span>
+        <span class="nav-line2">&amp; Orders</span>
+      </a>
+
+      <a class="nav-hover nav-cart" href="/cart">
+        <span class="cart-icon-wrap">
+          <span class="cart-count"><%= cartCount %></span>
+          <i class="fa-solid fa-cart-shopping"></i>
+        </span>
+        <span class="cart-label">Cart</span>
+      </a>
+
+      <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+
+    <div class="panel">
+      <a href="/search"><i class="fa-solid fa-bars"></i> All</a>
+      <a href="/search?sort=deals">Today's Deals</a>
+      <a href="/help">Customer Service</a>
+      <a href="/search?category=Toys">Registry</a>
+      <a href="/search?category=Gift%20Cards">Gift Cards</a>
+      <a href="/help">Sell</a>
+      <span class="panel-spacer"></span>
+      <a class="panel-electronics" href="/search?category=Electronics">Shop deals in Electronics</a>
+    </div>
+
+    <div class="mobile-menu" id="mobile-menu">
+      <a href="/help"><i class="fa-solid fa-location-dot"></i> Deliver to India</a>
+      <a href="<%= user ? '/orders' : '/login' %>">Hello, <%= user ? user.name : 'sign in' %></a>
+      <a href="/orders">Returns &amp; Orders</a>
+      <% if (user) { %>
+        <form method="post" action="/logout"><button type="submit">Sign out</button></form>
+      <% } %>
+      <a href="/search">All</a>
+      <a href="/search?sort=deals">Today's Deals</a>
+      <a href="/help">Customer Service</a>
+      <a href="/search?category=Toys">Registry</a>
+      <a href="/search?category=Gift%20Cards">Gift Cards</a>
+      <a href="/help">Sell</a>
+      <a href="/search?category=Electronics">Shop deals in Electronics</a>
+    </div>
+  </header>
+  <main>

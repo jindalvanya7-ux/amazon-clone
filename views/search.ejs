@@ -1,0 +1,36 @@
+<%- include('partials/header') %>
+<section class="page">
+  <h1>Results</h1>
+  <% if (q) { %>
+    <p class="page-note">Showing results for "<%= q %>"<% if (category && category !== 'All') { %> in <%= category %><% } %></p>
+  <% } else if (category) { %>
+    <p class="page-note"><%= category %><% if (sort === 'deals') { %> · deals first<% } %></p>
+  <% } else if (sort === 'deals') { %>
+    <p class="page-note">Today's deals</p>
+  <% } %>
+
+  <% if (!products.length) { %>
+    <p class="empty">No results for <%= q ? '"' + q + '"' : (category || 'your search') %>.</p>
+  <% } else { %>
+    <div class="results">
+      <% products.forEach(function (product) { %>
+        <article class="result-card">
+          <a href="/product/<%= product.id %>">
+            <div class="result-img" style="background-image: url('<%= placeholderUri(product.image_color, product.category) %>')"></div>
+            <h2><%= product.title %></h2>
+          </a>
+          <%- include('partials/stars', { rating: product.rating, reviewCount: product.review_count }) %>
+          <p class="price"><%= formatPrice(product.price_cents) %></p>
+          <% if (product.deal) { %><p class="deal-flag">Deal</p><% } %>
+          <form method="post" action="/cart/add">
+            <input type="hidden" name="product_id" value="<%= product.id %>">
+            <input type="hidden" name="quantity" value="1">
+            <input type="hidden" name="next" value="<%= '/search?q=' + encodeURIComponent(q) + '&category=' + encodeURIComponent(category) + (sort ? '&sort=' + encodeURIComponent(sort) : '') %>">
+            <button class="btn-add" type="submit" <%= product.stock < 1 ? 'disabled' : '' %>>Add to cart</button>
+          </form>
+        </article>
+      <% }) %>
+    </div>
+  <% } %>
+</section>
+<%- include('partials/footer') %>

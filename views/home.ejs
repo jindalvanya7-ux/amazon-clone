@@ -1,0 +1,60 @@
+<%- include('partials/header') %>
+<section class="hero">
+  <div class="hero-collage" aria-hidden="true">
+    <span style="background:#FF9900"></span>
+    <span style="background:#146EB4"></span>
+    <span style="background:#E47911"></span>
+    <span style="background:#232F3E"></span>
+    <span style="background:#F3A847"></span>
+    <span style="background:#48A868"></span>
+    <span style="background:#C7511F"></span>
+    <span style="background:#7B68A6"></span>
+  </div>
+  <div class="hero-strip">
+    <p>
+      You are on amazon.com. You can also shop on Amazon India for millions of products with fast local delivery.
+      <a href="https://www.amazon.in" target="_blank" rel="noopener">Click here to go to amazon.in</a>
+    </p>
+  </div>
+</section>
+
+<section class="shop">
+  <div class="shop-row">
+    <% cards.forEach(function (card) { %>
+      <article class="shop-card">
+        <div class="shop-card-inner">
+          <h2><%= card.title %></h2>
+          <% if (card.product) { %>
+            <div class="shop-card-img" style="background-image: url('<%= placeholderUri(card.product.image_color, card.product.category) %>')"></div>
+          <% } else { %>
+            <div class="shop-card-img" style="background-image: url('<%= placeholderUri('#D5D9D9', card.category) %>')"></div>
+          <% } %>
+          <a class="see-more" href="/search?category=<%= encodeURIComponent(card.category) %>">See more</a>
+        </div>
+      </article>
+    <% }) %>
+  </div>
+
+  <div class="deals">
+    <h2>Today's deals</h2>
+    <div class="deals-row">
+      <% deals.forEach(function (product) { %>
+        <article class="deal-tile">
+          <a href="/product/<%= product.id %>">
+            <div class="deal-img" style="background-image: url('<%= placeholderUri(product.image_color, product.category) %>')"></div>
+            <p class="deal-title"><%= product.title %></p>
+          </a>
+          <%- include('partials/stars', { rating: product.rating, reviewCount: product.review_count }) %>
+          <p class="deal-price"><%= formatPrice(product.price_cents) %></p>
+          <form method="post" action="/cart/add">
+            <input type="hidden" name="product_id" value="<%= product.id %>">
+            <input type="hidden" name="quantity" value="1">
+            <input type="hidden" name="next" value="/">
+            <button class="btn-add" type="submit">Add to cart</button>
+          </form>
+        </article>
+      <% }) %>
+    </div>
+  </div>
+</section>
+<%- include('partials/footer') %>

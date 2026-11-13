@@ -1,0 +1,37 @@
+<%- include('partials/header') %>
+<section class="page">
+  <% if (!product) { %>
+    <h1>Product not found</h1>
+    <p class="empty">That item is not in the shop. <a class="see-more" href="/">Back to home</a></p>
+  <% } else { %>
+    <% const maxQty = Math.max(1, Math.min(10, product.stock)); %>
+    <article class="product">
+      <div class="product-image" style="background-image: url('<%= placeholderUri(product.image_color, product.category) %>')"></div>
+      <div class="product-info">
+        <p class="crumb"><a class="see-more" href="/search?category=<%= encodeURIComponent(product.category) %>"><%= product.category %></a></p>
+        <h1><%= product.title %></h1>
+        <%- include('partials/stars', { rating: product.rating, reviewCount: product.review_count }) %>
+        <p class="price"><%= formatPrice(product.price_cents) %></p>
+        <ul class="bullets">
+          <% product.description.split('\n').forEach(function (line) { %>
+            <% if (line.trim()) { %><li><%= line %></li><% } %>
+          <% }) %>
+        </ul>
+        <p class="stock"><%= product.stock %> in stock</p>
+        <% if (product.stock > 0) { %>
+          <form class="add-form" method="post" action="/cart/add">
+            <input type="hidden" name="product_id" value="<%= product.id %>">
+            <input type="hidden" name="next" value="/product/<%= product.id %>">
+            <label>Quantity
+              <input type="number" name="quantity" min="1" max="<%= maxQty %>" value="1">
+            </label>
+            <button class="btn-add" type="submit">Add to cart</button>
+          </form>
+        <% } else { %>
+          <p class="form-error">Out of stock</p>
+        <% } %>
+      </div>
+    </article>
+  <% } %>
+</section>
+<%- include('partials/footer') %>

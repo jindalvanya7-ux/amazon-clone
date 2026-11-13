@@ -1,0 +1,36 @@
+<%- include('partials/header') %>
+<section class="page">
+  <h1>Your Orders</h1>
+  <% if (!orders.length) { %>
+    <p class="empty">You have no orders yet. <a class="see-more" href="/">Start shopping</a></p>
+  <% } else { %>
+    <% orders.forEach(function (order) { %>
+      <article class="order-card">
+        <header class="order-head">
+          <div>
+            <p class="nav-line1">Order placed</p>
+            <p><%= order.created_at %></p>
+          </div>
+          <div>
+            <p class="nav-line1">Total</p>
+            <p><%= formatPrice(order.total_cents) %></p>
+          </div>
+          <div>
+            <p class="nav-line1">Order id</p>
+            <p><%= order.id %></p>
+          </div>
+        </header>
+        <p class="ship-to"><%= order.name %>, <%= order.address %>, <%= order.city %> <%= order.postal %></p>
+        <ul class="order-items">
+          <% order.items.forEach(function (item) { %>
+            <li>
+              <a href="/product/<%= item.product_id %>"><%= item.title %></a>
+              <span><%= item.quantity %> × <%= formatPrice(item.unit_price_cents) %></span>
+            </li>
+          <% }) %>
+        </ul>
+      </article>
+    <% }) %>
+  <% } %>
+</section>
+<%- include('partials/footer') %>

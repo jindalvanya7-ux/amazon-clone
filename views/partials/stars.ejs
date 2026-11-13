@@ -1,0 +1,11 @@
+<span class="stars" aria-label="<%= rating %> out of 5 stars">
+  <% const filled = Math.round(Number(rating) || 0); %>
+  <% for (let i = 1; i <= 5; i++) { %>
+    <% if (i <= filled) { %>
+      <i class="fa-solid fa-star"></i>
+    <% } else { %>
+      <i class="fa-regular fa-star"></i>
+    <% } %>
+  <% } %>
+  <span class="review-count"><%= reviewCount %></span>
+</span>
